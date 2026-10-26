@@ -1,71 +1,147 @@
-# Análise do 2º turno presidencial 2026 — rankings por município
+# Análise Independente do 2º Turno Presidencial de 2026
 
-Quais cidades deram mais votos, maior percentual e maior vantagem (em votos e em pontos percentuais) a **Lula** e a **Flávio Bolsonaro** no 2º turno de 25/10/2026, com cortes Top 3, 5, 10, 15 … 50.
+Análise eleitoral e rankings municipais reproduzíveis do 2º turno da eleição presidencial brasileira de 25 de outubro de 2026 (**Lula** × **Flávio Bolsonaro**), baseada estritamente nos dados oficiais do Tribunal Superior Eleitoral (TSE).
 
-Inspirado em [apolinario/urnas-tardias](https://github.com/apolinario/urnas-tardias): mesma fonte (publicação oficial do TSE em `resultados.tse.jus.br`), outro recorte.
+> **Classificação metodológica:** Trata-se de uma **análise independente baseada em dados oficiais do TSE**. A fonte primária de apuração dos votos é oficial e pública, enquanto a extração, consolidação, metodologia de ordenação e relatórios são de autoria deste projeto.
 
-## Resultado
+Inspirado na arquitetura e rigor de [apolinario/urnas-tardias](https://github.com/apolinario/urnas-tardias): mesma fonte (`resultados.tse.jus.br`), voltado para a análise do resultado municipal e estadual.
 
-- **Relatório Nacional:** [`saida/relatorio.md`](saida/relatorio.md)
-- **Relatório dos Estados (compilado):** [`saida/relatorio_estados.md`](saida/relatorio_estados.md)
-- **Relatórios por Estado (27 UFs):** pasta [`saida/estados/`](saida/estados/) (ex.: [`SP.md`](saida/estados/SP.md), [`BA.md`](saida/estados/BA.md), [`MG.md`](saida/estados/MG.md))
-- **Base completa (todos os municípios):** [`saida/municipios.csv`](saida/municipios.csv)
-- **Rankings nacionais em formato longo:** [`saida/rankings.csv`](saida/rankings.csv)
-- **Rankings estaduais em formato longo:** [`saida/rankings_estados.csv`](saida/rankings_estados.csv)
+---
 
-## Como funciona
+## Resultados e Relatórios
 
-1. `crawl.py` lê a lista de municípios (`config/mun-e006258-cm.json`) e baixa o resultado final de cada um
-   (`dados/<uf>/<uf><cod_tse>-c0001-e006258-u.json`), mais os totais oficiais de cada UF e do Brasil. Retomável, com
-   limite de taxa, retry com backoff e `dados/manifest.json` (SHA-256 de cada arquivo).
-2. `analisa.py` consolida, **valida** contra os totais oficiais e gera os rankings nacionais e estaduais. Se qualquer checagem falhar, o
-   relatório não é gerado.
+- **Relatório Nacional Consolidado:** [`saida/relatorio.md`](saida/relatorio.md)
+  - Totais nacionais oficiais (Brasil + Exterior).
+  - Distribuição dos votos e vitórias por faixas de porte do eleitorado municipal.
+  - Rankings Top 3, 5, 10, 15, 20, 25, 30, 35, 40, 45 e 50 nas 8 categorias.
+  - Panorama geral dos 26 estados + DF.
+  - Tabela de validação de integridade dos dados e cruzamento com os totais oficiais.
+- **Relatório Geral dos Estados (Compilação):** [`saida/relatorio_estados.md`](saida/relatorio_estados.md)
+- **Relatórios Detalhados por Estado (27 UFs):** diretório [`saida/estados/`](saida/estados/) (ex.: [`SP.md`](saida/estados/SP.md), [`BA.md`](saida/estados/BA.md), [`MG.md`](saida/estados/MG.md), [`PR.md`](saida/estados/PR.md), [`RJ.md`](saida/estados/RJ.md)).
+- **Base Completa por Município:** [`saida/municipios.csv`](saida/municipios.csv) (todos os 5.571 municípios brasileiros + 186 localidades do exterior, com abstenções, brancos, nulos, válidos, votos e percentuais).
+- **Rankings Nacionais (formato longo):** [`saida/rankings.csv`](saida/rankings.csv)
+- **Rankings Estaduais (formato longo):** [`saida/rankings_estados.csv`](saida/rankings_estados.csv)
 
-`6258` é o código TSE da eleição *Presidente – 2º turno* (campo `cdt2` da eleição `6257`, 1º turno).
+---
 
-## Como executar
+## Destaques da Análise
 
-Requer [uv](https://docs.astral.sh/uv/) (ou Python ≥ 3.11 + `pandas`).
+### 1. Totais Nacionais Oficiais (TSE — Eleição 6258)
+- **Lula:** 64.256.232 votos (51,79%)
+- **Flávio Bolsonaro:** 59.826.041 votos (48,21%)
+- **Diferença:** +4.430.191 votos a favor de Lula
+- **Municípios brasileiros vencidos:** Lula venceu em 2.875 municípios; Flávio venceu em 2.695 municípios; houve exatamente **1 empate** descoberto dinamicamente pela base: **Marquinho/PR** (1.530 × 1.530 votos, 50,00%).
+- **Votação no Exterior (ZZ — 186 localidades):** Lula 200.154 votos (53,85%) × Flávio 171.497 votos (46,15%).
+
+### 2. Comportamento por Faixa de Porte do Eleitorado
+A distribuição dos municípios por faixas de votos válidos revela a geografia do resultado:
+
+| Faixa de porte | Municípios | Votos Válidos | Lula (votos) | Lula (%) | Flávio (votos) | Flávio (%) | Vantagem Lula | Cidades (L / F / Emp) |
+|:--|--:|--:|--:|--:|--:|--:|--:|:--:|
+| **Até 10.000 válidos** | 3.418 | 16.512.661 | 9.057.094 | 54,85% | 7.455.567 | 45,15% | +1.601.527 (+9,70 p.p.) | 1.718 / 1.699 / 1 |
+| **10.001 a 50.000 válidos** | 1.768 | 35.095.190 | 19.433.627 | 55,37% | 15.661.563 | 44,63% | +3.772.064 (+10,75 p.p.) | 1.015 / 753 |
+| **50.001 a 200.000 válidos** | 310 | 28.209.254 | 13.240.706 | 46,94% | 14.968.548 | 53,06% | −1.727.842 (−6,13 p.p.) | 113 / 197 |
+| **200.001 a 500.000 válidos** | 57 | 17.420.377 | 8.372.446 | 48,06% | 9.047.931 | 51,94% | −675.485 (−3,88 p.p.) | 21 / 36 |
+| **Mais de 500.000 válidos** | 18 | 26.473.140 | 13.952.205 | 52,70% | 12.520.935 | 47,30% | +1.431.270 (+5,41 p.p.) | 8 / 10 |
+
+**Leitura política e demográfica:**
+- **Cidades pequenas (<50 mil válidos):** Foi o principal motor da vitória de Lula (+5,37 milhões de votos de saldo agregado), com forte peso no Nordeste e Norte.
+- **Cidades médias e grandes (50 mil a 500 mil válidos):** Principal reduto de Flávio Bolsonaro (+2,40 milhões de votos de saldo líquido em 367 municípios), com forte presença no interior paulista, Sul e Centro-Oeste.
+- **Grandes metrópoles (>500 mil válidos):** Embora Flávio tenha vencido em 10 das 18 metrópoles brasileiras, Lula obteve uma vantagem agregada de +1,43 milhão de votos nas metrópoles, impulsionado por votações expressivas na capital de São Paulo (+766 mil), Salvador (+732 mil) e Fortaleza (+313 mil).
+
+---
+
+## Metodologia e Equivalência Matemática dos Rankings
+
+O projeto apresenta 8 tabelas de ranking (nacional e por estado):
+1. Mais votos brutos — Lula
+2. Mais votos brutos — Flávio
+3. Maior % de votos válidos — Lula
+4. Maior % de votos válidos — Flávio
+5. Maior vantagem em votos brutos — Lula sobre Flávio
+6. Maior vantagem em votos brutos — Flávio sobre Lula
+7. Maior vantagem percentual (p.p.) — Lula sobre Flávio
+8. Maior vantagem percentual (p.p.) — Flávio sobre Lula
+
+### A equivalência entre Percentual (%) e Vantagem em Pontos Percentuais (p.p.)
+Em uma eleição de segundo turno com exatamente dois candidatos, os votos válidos são dados por:
+$$\text{Válidos} = \text{Votos}_{\text{Lula}} + \text{Votos}_{\text{Flávio}}$$
+
+Portanto, $\% \text{Flávio} = 100\% - \% \text{Lula}$. A vantagem de Lula em pontos percentuais é:
+$$\text{Vantagem de Lula (p.p.)} = \% \text{Lula} - \% \text{Flávio} = \% \text{Lula} - (100 - \% \text{Lula}) = 2 \times \% \text{Lula} - 100$$
+
+Como a transformação afim $f(x) = 2x - 100$ é estritamente crescente (derivada positiva igual a 2), ordenar municípios pelo $\% \text{Lula}$ gera **rigorosamente a mesma sequência/ordenação** que ordená-los pela vantagem percentual de Lula em p.p. O mesmo raciocínio se aplica simetricamente a Flávio Bolsonaro.
+
+**Conclusão:** Entre os 8 rankings gerados, existem exatamente **6 ordenações distintas** na base:
+1. Votos brutos Lula
+2. Votos brutos Flávio
+3. Diferença em votos brutos Lula (Lula − Flávio)
+4. Diferença em votos brutos Flávio (Flávio − Lula)
+5. Percentual / Margem p.p. de Lula
+6. Percentual / Margem p.p. de Flávio
+
+Ambas as tabelas (% e p.p.) são mantidas nos relatórios para conveniência analítica do leitor (uma permite visualizar o percentual absoluto atingido e a outra quantifica diretamente a margem de separação em relação ao adversário).
+
+---
+
+## Reprodutibilidade, Snapshot Bruto e Auditoria de Integridade
+
+1. **Snapshot Bruto dos Dados (`dados/tse_2turno_2026_raw.zip`):**
+   - O repositório armazena o pacote comprimido (6,39 MB) com todos os 5.757 arquivos JSON municipais originais e totais publicados pelo TSE.
+   - Caso a pasta `dados/raw` não exista, o script `analisa.py` descompacta automaticamente o snapshot.
+2. **Verificação de Hash SHA-256 (`dados/manifest.json`):**
+   - Antes de gerar qualquer relatório, `analisa.py` audita concurrentemente todos os arquivos brutos, verificando se seus bytes e hashes SHA-256 individuais coincidem com `manifest.json`.
+   - O hash consolidado `98e1cfbb6ec73f81603b25a05587f157ffa25b07796b254f3ed921e27ed7e8d9` é recomputado e validado em tempo de execução.
+3. **Validação Contábil Cruzada:**
+   - A soma de todos os municípios de cada estado é confrontada com o arquivo de totalização oficial da UF (`dados/raw/_totais/<uf>.json`).
+   - A soma nacional é confrontada com o total oficial do Brasil (`dados/raw/_totais/br.json`).
+   - O percentual calculado pelo projeto é comparado com os campos de percentual publicados pelo TSE (tolerância `< 1e-6` p.p.).
+4. **Descoberta Dinâmica de Empates:**
+   - O script não utiliza textos estáticos para empates; qualquer cidade empatada é identificada e descrita dinamicamente em runtime.
+5. **Robustez dos Filtros Estaduais (`--min-validos`):**
+   - O parâmetro `--min-validos` filtra estritamente os rankings municipais (evitando a distorção típica de municípios diminutos nas tabelas percentuais), mantendo o **Panorama Estadual** com os totais completos e oficiais do estado.
+
+---
+
+## Integração Contínua (CI)
+
+O repositório conta com pipeline automatizado no GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)), testando em múltiplos ambientes:
+- **Python 3.11, 3.12 e 3.13** em Ubuntu Linux.
+- Análise estática e linting rigoroso com **Ruff** (`ruff check .`).
+- Suíte completa de 18 testes unitários com **pytest** (`pytest -v`).
+- Execução determinística do pipeline `python analisa.py`, garantindo auditoria de integridade e checagens 100% verdes.
+
+---
+
+## Como Executar
+
+### Pré-requisitos
+Python ≥ 3.11 com gerenciador de ambiente ([uv](https://docs.astral.sh/uv/) ou `venv` + `pip`).
 
 ```powershell
-python crawl.py                 # ~10 min a 10 req/s; pode ser interrompido e retomado
-uv run --with pandas python analisa.py
+# 1. Instalar dependências
+pip install pandas pytest ruff
+
+# 2. Executar análise completa (extrai snapshot bruto e valida SHA-256)
+python analisa.py
+
+# 3. Executar com filtro de porte municipal (ex.: cidades com pelo menos 10.000 votos válidos)
+python analisa.py --min-validos 10000
+
+# 4. Executar para um estado específico (ex.: São Paulo)
+python analisa.py --uf SP
 ```
 
-Opções de `analisa.py`: `--top 50`, `--uf SP` (filtra UF específica), `--incluir-exterior`, `--min-validos 10000` (ignora cidades pequenas — útil
-para rankings percentuais).
-
-## Como testar
+### Como Executar os Testes
 
 ```powershell
-uv run --with pandas --with pytest pytest -q
-uv run --with ruff ruff check .
+pytest -v
+ruff check .
 ```
 
-## Definições
+---
 
-- **Votos válidos** = Lula + Flávio (brancos e nulos ficam fora), mesma base de percentual usada pelo TSE.
-- **% de votos** = votos do candidato ÷ votos válidos do município.
-- **Dif. votos** = votos Lula − votos Flávio. **Dif. p.p.** = % Lula − % Flávio. Os rankings de vantagem só incluem
-  cidades em que o candidato ficou na frente.
-- **Escopo padrão:** as 5.571 localidades brasileiras do TSE (5.570 municípios + Fernando de Noronha, listado à
-  parte). As 186 localidades do exterior (código `ZZ`) entram na base
-  (`municipios.csv`) e nos totais de validação, mas não nos rankings, salvo com `--incluir-exterior`.
-- **Desempate:** mais votos válidos, depois ordem alfabética.
+## Licença e Fontes
 
-## Limitações
-
-- Rankings percentuais favorecem municípios pequenos (poucos milhares de votos): leia a coluna *Válidos*.
-- Os dados refletem a totalização final publicada pelo TSE na data da execução; retificações posteriores exigem
-  rodar `crawl.py` novamente (apague `dados/raw` para forçar download completo).
-- A base é de resultados por município; não há granularidade de bairro/seção neste projeto.
-
-## Reprodutibilidade e auditoria
-
-`dados/manifest.json` registra fonte, data/hora do download e SHA-256 de cada arquivo bruto, além de um hash
-consolidado (também impresso no relatório). O relatório lista as checagens executadas (soma dos municípios = total
-oficial por UF e Brasil, % calculado = % do TSE, coerência de comparecimento etc.).
-
-## Manutenção
-
-Projeto pessoal de análise, sem garantia de suporte.
+- **Dados:** Tribunal Superior Eleitoral (TSE) — dados públicos oficiais (Eleição Ordinária Presidencial 2026, 2º Turno, código 6258).
+- **Código e Análise:** Licença MIT. Desenvolvido para pesquisa e transparência pública de dados eleitorais.

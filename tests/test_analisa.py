@@ -43,6 +43,7 @@ def _df(linhas):
     df["pct_flavio"] = df["flavio"] / df["validos"] * 100
     df["dif_votos"] = df["lula"] - df["flavio"]
     df["dif_pp"] = df["pct_lula"] - df["pct_flavio"]
+    df["exterior"] = df["uf"] == "ZZ"
     return df
 
 
@@ -139,4 +140,99 @@ def test_gerar_relatorio_estado():
     assert "São Paulo (SP)" in md
     assert "Campinas" in md and "Santos" in md
     assert "Panorama estadual" in md
+
+
+def test_relatorio_estado_nao_distorce_totais_com_min_validos():
+    df_completo = _df([("Pequena", "SP", 1000, 2000), ("Grande", "SP", 30000, 20000)])
+    df_ranqueavel = df_completo[df_completo["validos"] >= 10000]
+    ranks = {r.chave: a.calcular_ranking(df_ranqueavel, r) for r in a.RANKINGS}
+
+    md = a.gerar_relatorio_estado("SP", df_completo, ranks, top=50, min_validos=10000, n_ranqueados=len(df_ranqueavel))
+
+    # Totais no panorama devem ser 1.000 + 30.000 = 31.000 (Lula) e 2.000 + 20.000 = 22.000 (Flávio)
+    assert "31.000" in md
+    assert "22.000" in md
+    assert "9.000 votos" in md
+    assert "Total de localidades: 2" in md
+    assert "Filtro de porte aplicado" in md
+    assert "10.000" in md
+    # Apenas Grande deve constar no ranking gerado
+    assert "Grande" in md
+    assert "Pequena" not in md
+
+
+def test_verificar_manifesto(tmp_path):
+    import hashlib
+
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    f1 = raw / "a.json"
+    conteudo = b'{"teste": 1}'
+    f1.write_bytes(conteudo)
+    h1 = hashlib.sha256(conteudo).hexdigest()
+    arquivos = [{"arquivo": "raw/a.json", "bytes": len(conteudo), "sha256": h1}]
+    sha_cons = hashlib.sha256(f"raw/a.json:{h1}".encode()).hexdigest()
+    manifest = {
+        "fonte": "tse",
+        "eleicao": "6258",
+        "gerado_em": "2026-10-26T00:00:00Z",
+        "n_arquivos": 1,
+        "sha256_consolidado": sha_cons,
+        "arquivos": arquivos,
+    }
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+
+    chk = a.verificar_manifesto(tmp_path)
+    assert chk.ok is True
+
+    # Adultera o arquivo: o validador precisa acusar
+    f1.write_bytes(b'{"teste": 2}')
+    chk_adulterado = a.verificar_manifesto(tmp_path)
+    assert chk_adulterado.ok is False
+    assert "falhas" in chk_adulterado.detalhe
+
+
+def test_assegurar_dados_brutos_extrai_zip(tmp_path):
+    import zipfile
+
+    zip_path = tmp_path / "tse_2turno_2026_raw.zip"
+    with zipfile.ZipFile(zip_path, "w") as zf:
+        zf.writestr("raw/teste.json", '{"ok": true}')
+
+    a.assegurar_dados_brutos(tmp_path)
+    assert (tmp_path / "raw" / "teste.json").exists()
+
+
+def test_empates_descobertos_dinamicamente():
+    # Caso 1: sem empate
+    df_sem_empate = _df([("A", "SP", 100, 200), ("B", "MG", 300, 100)])
+    ranks1 = {r.chave: a.calcular_ranking(df_sem_empate, r) for r in a.RANKINGS}
+    md1 = a.gerar_relatorio(
+        df_sem_empate, df_sem_empate, ranks1, [], {"n_arquivos": 0, "sha256_consolidado": ""},
+        incluir_exterior=False, min_validos=0, top=50
+    )
+    assert "Empates municipais: 0" in md1
+
+    # Caso 2: com empate descoberto nos dados
+    df_com_empate = _df([("Empatada", "PR", 1530, 1530), ("Vencedora", "SC", 500, 200)])
+    ranks2 = {r.chave: a.calcular_ranking(df_com_empate, r) for r in a.RANKINGS}
+    md2 = a.gerar_relatorio(
+        df_com_empate, df_com_empate, ranks2, [], {"n_arquivos": 0, "sha256_consolidado": ""},
+        incluir_exterior=False, min_validos=0, top=50
+    )
+    assert "Empates municipais: 1 (Empatada/PR: 1.530 × 1.530 votos (50,00%))" in md2
+
+
+def test_tabela_analise_porte():
+    df = _df([
+        ("Pequena", "SP", 4000, 3000),       # 7k válidos -> Até 10.000
+        ("Media", "BA", 12000, 8000),        # 20k válidos -> 10.001 a 50.000
+        ("Metropole", "RJ", 400000, 300000)  # 700k válidos -> Mais de 500.000
+    ])
+    tab = a.tabela_analise_porte(df)
+    assert "Até 10.000 válidos" in tab
+    assert "10.001 a 50.000 válidos" in tab
+    assert "Mais de 500.000 válidos" in tab
+    assert "7.000" in tab and "20.000" in tab and "700.000" in tab
+
 

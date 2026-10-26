@@ -1,6 +1,6 @@
 # Eleições presidenciais 2026 — 2º turno: rankings por município
 
-_Gerado em 26/10/2026 15:37 a partir dos resultados oficiais do TSE (eleição 6258, totalização final)._
+_Gerado em 26/10/2026 18:38 a partir dos resultados oficiais do TSE (eleição 6258, totalização final)._
 
 ## Panorama Nacional
 
@@ -10,7 +10,19 @@ _Gerado em 26/10/2026 15:37 a partir dos resultados oficiais do TSE (eleição 6
 | % dos válidos | 51,79% | 48,21% |
 | Municípios brasileiros vencidos (de 5571) | 2.875 | 2.695 |
 
-Vantagem nacional de Lula: **4.430.191 votos**. Empates municipais: 1 (Marquinho/PR: 1.530 × 1.530 votos, 50,00%). Exterior (186 localidades): Lula 200.154 × Flávio 171.497.
+Vantagem nacional de Lula: **4.430.191 votos**. Empates municipais: 1 (Marquinho/PR: 1.530 × 1.530 votos (50,00%)). Exterior (186 localidades): Lula 200.154 × Flávio 171.497.
+
+## Distribuição por Faixa de Tamanho do Eleitorado
+
+Comportamento do voto conforme o porte dos municípios brasileiros (votos válidos apurados):
+
+| Faixa de porte | Municípios | Votos Válidos | Lula (votos) | Lula (%) | Flávio (votos) | Flávio (%) | Vantagem Lula | Cidades (L / F / Emp) |
+|:--|--:|--:|--:|--:|--:|--:|--:|:--:|
+| Até 10.000 válidos | 3.418 | 16.512.661 | 9.057.094 | 54,85% | 7.455.567 | 45,15% | +1.601.527 (+9,70 p.p.) | 1718 / 1699 / 1 |
+| 10.001 a 50.000 válidos | 1.768 | 35.095.190 | 19.433.627 | 55,37% | 15.661.563 | 44,63% | +3.772.064 (+10,75 p.p.) | 1015 / 753 |
+| 50.001 a 200.000 válidos | 310 | 28.209.254 | 13.240.706 | 46,94% | 14.968.548 | 53,06% | −1.727.842 (−6,13 p.p.) | 113 / 197 |
+| 200.001 a 500.000 válidos | 57 | 17.420.377 | 8.372.446 | 48,06% | 9.047.931 | 51,94% | −675.485 (−3,88 p.p.) | 21 / 36 |
+| Mais de 500.000 válidos | 18 | 26.473.140 | 13.952.205 | 52,70% | 12.520.935 | 47,30% | +1.431.270 (+5,41 p.p.) | 8 / 10 |
 
 ## Como ler
 
@@ -519,10 +531,11 @@ Consulte abaixo o resultado consolidado estado a estado. Para os rankings detalh
 
 ## Validação dos dados
 
-34/34 checagens passaram. Base: 5787 arquivos oficiais, SHA-256 consolidado `98e1cfbb6ec73f81603b25a05587f157ffa25b07796b254f3ed921e27ed7e8d9`.
+35/35 checagens passaram. Base: 5787 arquivos oficiais, SHA-256 consolidado `98e1cfbb6ec73f81603b25a05587f157ffa25b07796b254f3ed921e27ed7e8d9`.
 
 | Checagem | Resultado |
 |:--|:--|
+| integridade SHA-256 contra manifest.json | ✅ 5787 arquivos verificados (hash consolidado 98e1cfbb6ec7…) |
 | municípios únicos (UF+código TSE) | ✅ 5757 linhas |
 | todos com totalização final | ✅  |
 | válidos = Lula + Flávio (cada município) | ✅  |

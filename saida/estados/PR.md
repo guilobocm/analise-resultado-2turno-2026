@@ -11,7 +11,7 @@ _Rankings municipais oficiais do TSE (eleição 6258, totalização final). Tota
 | Municípios vencidos (de 399) | 69 | 329 |
 
 **Vencedor no estado:** **Flávio** por **1.724.940 votos (−25,15 p.p.)**.
-**Municípios com empate:** 1 (Marquinho).
+**Municípios com empate:** 1 (Marquinho: 1.530 × 1.530 votos (50,00%)).
 
 ## Resumo — Top 3 do estado
 
