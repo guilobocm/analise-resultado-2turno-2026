@@ -30,6 +30,13 @@ COD_LULA = "13"
 COD_FLAVIO = "22"
 TOP_NS = (3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50)
 PEQUENAS = {"De", "Da", "Do", "Das", "Dos", "E"}
+REGIOES = {
+    "Norte": ("AC", "AP", "AM", "PA", "RO", "RR", "TO"),
+    "Nordeste": ("AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE"),
+    "Centro-Oeste": ("DF", "GO", "MT", "MS"),
+    "Sudeste": ("ES", "MG", "RJ", "SP"),
+    "Sul": ("PR", "RS", "SC"),
+}
 
 
 # --------------------------------------------------------------------------- leitura
@@ -203,6 +210,31 @@ def validar(df: pd.DataFrame, dados: Path) -> list[Checagem]:
     oficial_br = totais(pasta / "br.json")
     soma_br = (int(df["lula"].sum()), int(df["flavio"].sum()))
     res.append(Checagem("soma de tudo = total oficial Brasil", soma_br == oficial_br, f"{soma_br} vs {oficial_br}"))
+
+    # Reconciliação contábil: faixas de porte nacional vs regional (cidades com ≤ 50k válidos)
+    ext = df["exterior"] if "exterior" in df.columns else (df["uf"] == "ZZ")
+    br = df[~ext]
+    if len(br) >= 5000:
+        peq_porte = br[br["validos"] <= 50_000]
+        uf2reg = {uf: reg for reg, ufs in REGIOES.items() for uf in ufs}
+        soma_reg_mun = sum((peq_porte["uf"].map(uf2reg) == reg).sum() for reg in REGIOES)
+        soma_reg_val = sum(peq_porte[peq_porte["uf"].map(uf2reg) == reg]["validos"].sum() for reg in REGIOES)
+        soma_reg_lula = sum(peq_porte[peq_porte["uf"].map(uf2reg) == reg]["lula"].sum() for reg in REGIOES)
+        soma_reg_fla = sum(peq_porte[peq_porte["uf"].map(uf2reg) == reg]["flavio"].sum() for reg in REGIOES)
+        ok_rec = (
+            soma_reg_mun == len(peq_porte)
+            and soma_reg_val == peq_porte["validos"].sum()
+            and soma_reg_lula == peq_porte["lula"].sum()
+            and soma_reg_fla == peq_porte["flavio"].sum()
+        )
+        res.append(
+            Checagem(
+                "reconciliação porte nacional vs regional (≤ 50k válidos)",
+                bool(ok_rec),
+                f"{soma_reg_mun} municípios, {f_int(soma_reg_val)} válidos "
+                f"(Lula: {f_int(soma_reg_lula)}, Flávio: {f_int(soma_reg_fla)})",
+            )
+        )
     return res
 
 
@@ -365,15 +397,6 @@ def tabela_analise_porte(df: pd.DataFrame) -> str:
             f"{f_int(tot_f)} | {f_pct(pct_f)} | {vant_str} | {cid_str} |"
         )
     return "\n".join([cab, sep, *linhas])
-
-
-REGIOES = {
-    "Norte": ("AC", "AP", "AM", "PA", "RO", "RR", "TO"),
-    "Nordeste": ("AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE"),
-    "Centro-Oeste": ("DF", "GO", "MT", "MS"),
-    "Sudeste": ("ES", "MG", "RJ", "SP"),
-    "Sul": ("PR", "RS", "SC"),
-}
 
 
 def tabela_porte_por_regiao(df: pd.DataFrame, limite_validos: int = 50_000) -> str:
@@ -658,11 +681,12 @@ def gerar_relatorio(
     L.append("")
     L.append(
         "> [!IMPORTANT]\n"
-        "> **Composição Regional vs. Porte:** A vantagem agregada de Lula nas cidades pequenas (+5,37 milhões de votos) "
-        "decorre integralmente da votação no Nordeste (+8,57 milhões de saldo em 1.735 cidades). No Centro-Oeste, Sudeste e "
-        "Sul, Flávio Bolsonaro venceu na maioria das cidades de pequeno porte (ganhou em 2.133 dos 2.947 municípios "
-        "dessas três regiões, obtendo um saldo favorável de quase 3 milhões de votos). Portanto, o tamanho do município não "
-        "explica, por si só, o voto sem considerar a região geográfica.\n"
+        "> **Efeito de Composição Regional vs. Porte:** A vantagem agregada de Lula nas cidades com até 50 mil votos válidos "
+        "(+5,37 milhões de votos) decorre da votação no Nordeste (+9,68 milhões de saldo em 1.706 cidades). "
+        "No Centro-Oeste, Sudeste e Sul, Flávio Bolsonaro venceu na maioria das cidades desse mesmo porte (ganhou em 2.276 dos "
+        "3.062 municípios dessas três regiões, acumulando uma vantagem de 4,64 milhões de votos). Portanto, o porte municipal "
+        "não deve ser interpretado como determinante causal isolado, sendo preponderante a "
+        "heterogeneidade e composição regional.\n"
     )
 
     L.append("## Como ler\n")

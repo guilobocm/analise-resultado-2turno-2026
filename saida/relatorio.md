@@ -1,6 +1,6 @@
 # Eleições presidenciais 2026 — 2º turno: rankings por município
 
-_Gerado em 26/10/2026 18:59 a partir dos resultados oficiais do TSE (eleição 6258, totalização final)._
+_Gerado em 26/10/2026 19:16 a partir dos resultados oficiais do TSE (eleição 6258, totalização final)._
 
 ## Panorama Nacional
 
@@ -39,7 +39,7 @@ Para avaliar se o padrão de cidades pequenas é uniforme ou produto da composi�
 | Sul | 1.125 | 8.910.048 | 3.169.946 | 35,58% | 5.740.102 | 64,42% | −2.570.156 (−28,85 p.p.) | 126 / 998 / 1 |
 
 > [!IMPORTANT]
-> **Composição Regional vs. Porte:** A vantagem agregada de Lula nas cidades pequenas (+5,37 milhões de votos) decorre integralmente da votação no Nordeste (+8,57 milhões de saldo em 1.735 cidades). No Centro-Oeste, Sudeste e Sul, Flávio Bolsonaro venceu na maioria das cidades de pequeno porte (ganhou em 2.133 dos 2.947 municípios dessas três regiões, obtendo um saldo favorável de quase 3 milhões de votos). Portanto, o tamanho do município não explica, por si só, o voto sem considerar a região geográfica.
+> **Efeito de Composição Regional vs. Porte:** A vantagem agregada de Lula nas cidades com até 50 mil votos válidos (+5,37 milhões de votos) decorre da votação no Nordeste (+9,68 milhões de saldo em 1.706 cidades). No Centro-Oeste, Sudeste e Sul, Flávio Bolsonaro venceu na maioria das cidades desse mesmo porte (ganhou em 2.276 dos 3.062 municípios dessas três regiões, acumulando uma vantagem de 4,64 milhões de votos). Portanto, o porte municipal não deve ser interpretado como determinante causal isolado, sendo preponderante a heterogeneidade e composição regional.
 
 ## Como ler
 
@@ -549,7 +549,7 @@ Consulte abaixo o resultado consolidado estado a estado. Para os rankings detalh
 
 ## Validação dos dados
 
-35/35 checagens passaram. Base: 5787 arquivos oficiais, SHA-256 consolidado `98e1cfbb6ec73f81603b25a05587f157ffa25b07796b254f3ed921e27ed7e8d9`.
+36/36 checagens passaram. Base: 5787 arquivos oficiais, SHA-256 consolidado `98e1cfbb6ec73f81603b25a05587f157ffa25b07796b254f3ed921e27ed7e8d9`.
 
 | Checagem | Resultado |
 |:--|:--|
@@ -560,6 +560,7 @@ Consulte abaixo o resultado consolidado estado a estado. Para os rankings detalh
 | comparecimento = válidos + brancos + nulos (cada município) | ✅  |
 | % calculado = % oficial do TSE (tol. 1e-6 p.p.) | ✅ maior diferença 5.00e-10 |
 | soma de tudo = total oficial Brasil | ✅ (64256232, 59826041) vs (64256232, 59826041) |
+| reconciliação porte nacional vs regional (≤ 50k válidos) | ✅ 5186 municípios, 51.607.851 válidos (Lula: 28.490.721, Flávio: 23.117.130) |
 | soma dos municípios = total oficial, por UF/exterior | ✅ 28/28 |
 
 _Top 50 por ranking. Dados completos: `municipios.csv`; rankings nacionais em formato longo: `rankings.csv`; rankings por estado em formato longo: `rankings_estados.csv`._

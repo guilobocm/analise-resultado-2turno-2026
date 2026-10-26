@@ -53,19 +53,19 @@ Para evitar generalizações apressadas (falácia ecológica), é indispensável
 
 | Região | Municípios (≤ 50k) | Votos Válidos | Lula (votos) | Lula (%) | Flávio (votos) | Flávio (%) | Vantagem Lula | Cidades (L / F / Emp) |
 |:--|--:|--:|--:|--:|--:|--:|--:|:--:|
-| **Norte** | 404 | 4.449.165 | 2.323.736 | 52,23% | 2.125.429 | 47,77% | +198.307 (+4,46 p.p.) | 247 / 157 / 0 |
-| **Nordeste** | 1.735 | 20.404.249 | 14.484.792 | 70,99% | 5.919.457 | 29,01% | +8.565.335 (+41,98 p.p.) | 1.673 / 62 / 0 |
-| **Centro-Oeste** | 429 | 3.694.769 | 1.490.443 | 40,34% | 2.204.326 | 59,66% | −713.883 (−19,32 p.p.) | 110 / 319 / 0 |
-| **Sudeste** | 1.352 | 12.698.903 | 5.660.190 | 44,57% | 7.038.713 | 55,43% | −1.378.523 (−10,86 p.p.) | 534 / 818 / 0 |
-| **Sul** | 1.166 | 9.960.765 | 4.531.560 | 45,49% | 5.429.205 | 54,51% | −897.645 (−9,02 p.p.) | 169 / 996 / 1 |
+| **Norte** | 418 | 4.675.559 | 2.502.886 | 53,53% | 2.172.673 | 46,47% | +330.213 (+7,06 p.p.) | 254 / 164 / 0 |
+| **Nordeste** | 1.706 | 20.067.460 | 14.876.144 | 74,13% | 5.191.316 | 25,87% | +9.684.828 (+48,26 p.p.) | 1.694 / 12 / 0 |
+| **Centro-Oeste** | 442 | 3.704.275 | 1.442.808 | 38,95% | 2.261.467 | 61,05% | −818.659 (−22,10 p.p.) | 61 / 381 / 0 |
+| **Sudeste** | 1.495 | 14.250.509 | 6.498.937 | 45,60% | 7.751.572 | 54,40% | −1.252.635 (−8,79 p.p.) | 598 / 897 / 0 |
+| **Sul** | 1.125 | 8.910.048 | 3.169.946 | 35,58% | 5.740.102 | 64,42% | −2.570.156 (−28,85 p.p.) | 126 / 998 / 1 |
 
 > [!IMPORTANT]
-> **Composição Regional vs. Porte Municipal:** A vantagem de Lula no agregado nacional das cidades com até 50 mil votos válidos (+5,37 milhões de votos) **não é um padrão uniforme em todos os municípios pequenos do país**. Ela decorre quase exclusivamente da votação maciça no Nordeste (+8,57 milhões de saldo em 1.735 cidades). No Centro-Oeste, Sudeste e Sul, Flávio Bolsonaro venceu na ampla maioria das cidades pequenas (venceu em 2.133 dos 2.947 municípios dessas três regiões, abrindo quase 3 milhões de votos de saldo pró-Flávio). Portanto, o porte municipal não deve ser interpretado como fator causal isolado.
+> **Efeito de Composição Regional vs. Porte Municipal:** A vantagem agregada de Lula nas cidades com até 50 mil votos válidos (+5,37 milhões de votos) **não decorre de uma tendência uniforme de pequenas cidades em todo o Brasil**. Ela é explicada pela votação expressiva no Nordeste (+9,68 milhões de saldo em 1.706 cidades pequenas). No Centro-Oeste, Sudeste e Sul, Flávio Bolsonaro foi o vencedor na maioria absoluta dos municípios desse mesmo porte (venceu em 2.276 das 3.062 cidades dessas três regiões, acumulando uma vantagem de 4,64 milhões de votos). Portanto, o porte municipal não deve ser interpretado como fator causal isolado, tratando-se preponderantemente de um efeito de composição e heterogeneidade geográfica.
 
-**Síntese dos portes:**
-- **Localidades com até 50 mil votos válidos:** Motor determinante da margem nacional de Lula (+5,37M de saldo nacional), alavancado pelas 1.735 cidades do Nordeste e Norte.
-- **Cidades médias e grandes (50 mil a 500 mil válidos):** Principal reduto de Flávio Bolsonaro (+2,40M de saldo líquido em 367 municípios), predominante no interior de SP, Sul e Centro-Oeste.
-- **Grandes metrópoles (>500 mil válidos):** Embora Flávio tenha vencido em 10 das 18 metrópoles brasileiras, Lula obteve uma vantagem agregada de +1,43 milhão de votos nas metrópoles, impulsionado por votações expressivas na capital de São Paulo (+766 mil), Salvador (+732 mil) e Fortaleza (+313 mil).
+**Síntese reconciliada por porte:**
+- **Localidades com até 50 mil votos válidos (5.186 municípios):** Saldo líquido nacional de Lula de +5.373.591 votos (+1.601.527 na faixa até 10k e +3.772.064 na faixa 10k-50k), impulsionado pelas regiões Nordeste e Norte.
+- **Cidades médias e grandes (50 mil a 500 mil válidos, 367 municípios):** Reduto de Flávio Bolsonaro, com saldo pró-Flávio de −2.403.327 votos (−1.727.842 na faixa 50k-200k e −675.485 na faixa 200k-500k).
+- **Grandes metrópoles (>500 mil válidos, 18 municípios):** Embora Flávio tenha vencido em 10 das 18 metrópoles, Lula obteve vantagem líquida de +1.431.270 votos nas metrópoles, impulsionado por São Paulo capital (+766 mil), Salvador (+732 mil) e Fortaleza (+313 mil).
 
 ---
 

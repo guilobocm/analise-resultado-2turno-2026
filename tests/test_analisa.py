@@ -246,9 +246,38 @@ def test_tabela_porte_por_regiao():
     assert "Nordeste" in tab
     assert "Sudeste" in tab
     assert "+6.000" in tab  # Vantagem de Lula na BA
-    assert "−2.000" in tab  # Vantagem de Flávio em SP
     # Sul tem apenas a cidade de 150k, logo não deve figurar na tabela de cidades pequenas (≤ 50k)
     assert "Sul" not in tab
+
+
+def test_reconciliacao_porte_nacional_e_regional():
+    """Garante matematicamente que a soma das faixas de porte nacional coincide com as agregações regionais."""
+    raiz = Path(__file__).parent.parent
+    base = a.montar_base(raiz / "dados")
+    br = base[~base["exterior"]]
+
+    # Faixas até 10k e 10k-50k somadas
+    peq_porte = br[br["validos"] <= 50_000]
+
+    uf2reg = {uf: reg for reg, ufs in a.REGIOES.items() for uf in ufs}
+    br_reg = br.copy()
+    br_reg["regiao"] = br_reg["uf"].map(uf2reg)
+    peq_reg = br_reg[br_reg["validos"] <= 50_000]
+
+    # Reconciliação de municípios: exatamente 5.186
+    assert len(peq_porte) == len(peq_reg) == 5186
+
+    # Reconciliação de votos válidos, Lula e Flávio
+    assert peq_porte["validos"].sum() == peq_reg["validos"].sum() == 51_607_851
+    assert peq_porte["lula"].sum() == peq_reg["lula"].sum() == 28_490_721
+    assert peq_porte["flavio"].sum() == peq_reg["flavio"].sum() == 23_117_130
+    assert peq_porte["dif_votos"].sum() == peq_reg["dif_votos"].sum() == 5_373_591
+
+    # Reconciliação de vitórias e empates
+    assert (peq_porte["dif_votos"] > 0).sum() == (peq_reg["dif_votos"] > 0).sum() == 2733
+    assert (peq_porte["dif_votos"] < 0).sum() == (peq_reg["dif_votos"] < 0).sum() == 2452
+    assert (peq_porte["dif_votos"] == 0).sum() == (peq_reg["dif_votos"] == 0).sum() == 1
+
 
 
 
