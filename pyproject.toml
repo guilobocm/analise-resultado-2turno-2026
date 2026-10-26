@@ -1,0 +1,20 @@
+[project]
+name = "analise-resultado-2turno-2026"
+version = "1.0.0"
+description = "Rankings municipais do 2º turno presidencial de 2026 (Lula x Flávio Bolsonaro) a partir dos dados oficiais do TSE."
+requires-python = ">=3.11"
+dependencies = ["pandas>=2.2"]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 130
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
