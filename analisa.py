@@ -367,6 +367,50 @@ def tabela_analise_porte(df: pd.DataFrame) -> str:
     return "\n".join([cab, sep, *linhas])
 
 
+REGIOES = {
+    "Norte": ("AC", "AP", "AM", "PA", "RO", "RR", "TO"),
+    "Nordeste": ("AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE"),
+    "Centro-Oeste": ("DF", "GO", "MT", "MS"),
+    "Sudeste": ("ES", "MG", "RJ", "SP"),
+    "Sul": ("PR", "RS", "SC"),
+}
+
+
+def tabela_porte_por_regiao(df: pd.DataFrame, limite_validos: int = 50_000) -> str:
+    """Demonstra o comportamento dos municípios pequenos (≤ limite_validos) por macrorregião geográfica."""
+    br = df[~df["exterior"]].copy()
+    uf2reg = {uf: reg for reg, ufs in REGIOES.items() for uf in ufs}
+    br["regiao"] = br["uf"].map(uf2reg)
+    peq = br[br["validos"] <= limite_validos]
+
+    cab = (
+        "| Região | Municípios (≤ 50k) | Votos Válidos | Lula (votos) | Lula (%) | "
+        "Flávio (votos) | Flávio (%) | Vantagem Lula | Cidades (L / F / Emp) |"
+    )
+    sep = "|:--|--:|--:|--:|--:|--:|--:|--:|:--:|"
+    linhas = []
+    for reg in ("Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"):
+        sub = peq[peq["regiao"] == reg]
+        if sub.empty:
+            continue
+        tot_val = int(sub["validos"].sum())
+        tot_l = int(sub["lula"].sum())
+        tot_f = int(sub["flavio"].sum())
+        pct_l = (tot_l / tot_val * 100) if tot_val > 0 else 0.0
+        pct_f = (tot_f / tot_val * 100) if tot_val > 0 else 0.0
+        dif_v = tot_l - tot_f
+        c_l = int((sub["dif_votos"] > 0).sum())
+        c_f = int((sub["dif_votos"] < 0).sum())
+        c_emp = int((sub["dif_votos"] == 0).sum())
+        cid_str = f"{c_l} / {c_f}" + (f" / {c_emp}" if c_emp > 0 else "")
+        vant_str = f"{f_sinal_int(dif_v)} ({f_sinal_pp(pct_l - pct_f)} p.p.)"
+        linhas.append(
+            f"| {reg} | {f_int(len(sub))} | {f_int(tot_val)} | {f_int(tot_l)} | {f_pct(pct_l)} | "
+            f"{f_int(tot_f)} | {f_pct(pct_f)} | {vant_str} | {cid_str} |"
+        )
+    return "\n".join([cab, sep, *linhas])
+
+
 def tabela_resumo_estados(df: pd.DataFrame, link_prefix: str = "estados") -> str:
     """Tabela comparativa com os totais de cada UF e link para o relatório estadual."""
     cab = (
@@ -596,10 +640,30 @@ def gerar_relatorio(
         f"Exterior ({len(ext)} localidades): Lula {ext_l} × Flávio {ext_f}.\n"
     )
 
-    L.append("## Distribuição por Faixa de Tamanho do Eleitorado\n")
+    L.append("## Distribuição por Faixa de Porte (Votos Válidos Apurados)\n")
     L.append("Comportamento do voto conforme o porte dos municípios brasileiros (votos válidos apurados):\n")
     L.append(tabela_analise_porte(base))
     L.append("")
+    L.append(
+        "_Nota conceitual: As faixas acima são estabelecidas pela quantidade de **votos válidos apurados** (Lula + Flávio). "
+        "O eleitorado apto (total de eleitores cadastrados) difere dos válidos por incluir abstenções, brancos e nulos. "
+        "A dinâmica política nacional se mantém equivalente sob ambas as métricas._\n"
+    )
+    L.append("### Estratificação Regional das Cidades Pequenas (até 50.000 votos válidos)\n")
+    L.append(
+        "Para avaliar se o padrão de cidades pequenas é uniforme ou produto da composição geográfica (evitando a "
+        "falácia ecológica), a tabela abaixo desagrega os 5.186 municípios com até 50 mil votos válidos por macrorregião:\n"
+    )
+    L.append(tabela_porte_por_regiao(base, 50_000))
+    L.append("")
+    L.append(
+        "> [!IMPORTANT]\n"
+        "> **Composição Regional vs. Porte:** A vantagem agregada de Lula nas cidades pequenas (+5,37 milhões de votos) "
+        "decorre integralmente da votação no Nordeste (+8,57 milhões de saldo em 1.735 cidades). No Centro-Oeste, Sudeste e "
+        "Sul, Flávio Bolsonaro venceu na maioria das cidades de pequeno porte (ganhou em 2.133 dos 2.947 municípios "
+        "dessas três regiões, obtendo um saldo favorável de quase 3 milhões de votos). Portanto, o tamanho do município não "
+        "explica, por si só, o voto sem considerar a região geográfica.\n"
+    )
 
     L.append("## Como ler\n")
     escopo_txt = "municípios brasileiros" + (" **e localidades no exterior**" if incluir_exterior else " (exterior fora)")
@@ -614,6 +678,12 @@ def gerar_relatorio(
         "Positivo = Lula na frente; negativo = Flávio na frente."
     )
     L.append("- Os rankings de **vantagem** só incluem cidades em que o candidato realmente ficou na frente.")
+    L.append(
+        "- **Equivalência Matemática e Cobertura:** A ordenação por % e por vantagem em p.p. é "
+        "rigorosamente idêntica dentro do conjunto de cidades vencidas pelo candidato (% > 50%, "
+        "já que Margem p.p. = 2 × % − 100). Porém, os rankings de vantagem excluem derrotas e empates, "
+        "ao passo que os rankings percentuais listam todas as localidades do escopo."
+    )
     L.append(
         "- Coluna **Faixa**: menor Top N (3, 5, 10, 15 … 50) que contém aquela posição — "
         "para ver o Top 10, leia as linhas marcadas Top 3, Top 5 e Top 10."

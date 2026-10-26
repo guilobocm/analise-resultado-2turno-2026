@@ -236,3 +236,19 @@ def test_tabela_analise_porte():
     assert "7.000" in tab and "20.000" in tab and "700.000" in tab
 
 
+def test_tabela_porte_por_regiao():
+    df = _df([
+        ("Sertao", "BA", 8000, 2000),      # Nordeste, 10k válidos
+        ("Interior", "SP", 4000, 6000),    # Sudeste, 10k válidos
+        ("Grande", "RS", 100000, 50000),   # Sul, 150k válidos (> 50k, não entra no corte)
+    ])
+    tab = a.tabela_porte_por_regiao(df, limite_validos=50_000)
+    assert "Nordeste" in tab
+    assert "Sudeste" in tab
+    assert "+6.000" in tab  # Vantagem de Lula na BA
+    assert "−2.000" in tab  # Vantagem de Flávio em SP
+    # Sul tem apenas a cidade de 150k, logo não deve figurar na tabela de cidades pequenas (≤ 50k)
+    assert "Sul" not in tab
+
+
+

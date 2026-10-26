@@ -33,8 +33,10 @@ Inspirado na arquitetura e rigor de [apolinario/urnas-tardias](https://github.co
 - **Municípios brasileiros vencidos:** Lula venceu em 2.875 municípios; Flávio venceu em 2.695 municípios; houve exatamente **1 empate** descoberto dinamicamente pela base: **Marquinho/PR** (1.530 × 1.530 votos, 50,00%).
 - **Votação no Exterior (ZZ — 186 localidades):** Lula 200.154 votos (53,85%) × Flávio 171.497 votos (46,15%).
 
-### 2. Comportamento por Faixa de Porte do Eleitorado
-A distribuição dos municípios por faixas de votos válidos revela a geografia do resultado:
+[![CI](https://github.com/guilobocm/analise-resultado-2turno-2026/actions/workflows/ci.yml/badge.svg)](https://github.com/guilobocm/analise-resultado-2turno-2026/actions/workflows/ci.yml)
+
+### 2. Comportamento por Faixa de Porte (Votos Válidos Apurados)
+A distribuição dos municípios por faixas de votos válidos apurados revela a geografia do resultado:
 
 | Faixa de porte | Municípios | Votos Válidos | Lula (votos) | Lula (%) | Flávio (votos) | Flávio (%) | Vantagem Lula | Cidades (L / F / Emp) |
 |:--|--:|--:|--:|--:|--:|--:|--:|:--:|
@@ -44,9 +46,25 @@ A distribuição dos municípios por faixas de votos válidos revela a geografia
 | **200.001 a 500.000 válidos** | 57 | 17.420.377 | 8.372.446 | 48,06% | 9.047.931 | 51,94% | −675.485 (−3,88 p.p.) | 21 / 36 |
 | **Mais de 500.000 válidos** | 18 | 26.473.140 | 13.952.205 | 52,70% | 12.520.935 | 47,30% | +1.431.270 (+5,41 p.p.) | 8 / 10 |
 
-**Leitura política e demográfica:**
-- **Cidades pequenas (<50 mil válidos):** Foi o principal motor da vitória de Lula (+5,37 milhões de votos de saldo agregado), com forte peso no Nordeste e Norte.
-- **Cidades médias e grandes (50 mil a 500 mil válidos):** Principal reduto de Flávio Bolsonaro (+2,40 milhões de votos de saldo líquido em 367 municípios), com forte presença no interior paulista, Sul e Centro-Oeste.
+> **Distinção conceitual (Votos Válidos vs. Eleitorado Apto):** A classificação acima baseia-se estritamente na quantidade de **votos válidos apurados** (Lula + Flávio), totalizando 123,7 milhões de votos nos municípios brasileiros. O **eleitorado apto** (157,8 milhões de eleitores registrados no TSE) é uma grandeza diferente por incluir abstenções (18,99%), votos brancos (1,37%) e nulos (2,73%). A dinâmica política agregada entre as faixas, todavia, mantém-se equivalente sob ambos os critérios.
+
+#### Estratificação Regional das Cidades Pequenas (até 50.000 votos válidos)
+Para evitar generalizações apressadas (falácia ecológica), é indispensável observar como o comportamento das cidades pequenas varia conforme a macrorregião geográfica:
+
+| Região | Municípios (≤ 50k) | Votos Válidos | Lula (votos) | Lula (%) | Flávio (votos) | Flávio (%) | Vantagem Lula | Cidades (L / F / Emp) |
+|:--|--:|--:|--:|--:|--:|--:|--:|:--:|
+| **Norte** | 404 | 4.449.165 | 2.323.736 | 52,23% | 2.125.429 | 47,77% | +198.307 (+4,46 p.p.) | 247 / 157 / 0 |
+| **Nordeste** | 1.735 | 20.404.249 | 14.484.792 | 70,99% | 5.919.457 | 29,01% | +8.565.335 (+41,98 p.p.) | 1.673 / 62 / 0 |
+| **Centro-Oeste** | 429 | 3.694.769 | 1.490.443 | 40,34% | 2.204.326 | 59,66% | −713.883 (−19,32 p.p.) | 110 / 319 / 0 |
+| **Sudeste** | 1.352 | 12.698.903 | 5.660.190 | 44,57% | 7.038.713 | 55,43% | −1.378.523 (−10,86 p.p.) | 534 / 818 / 0 |
+| **Sul** | 1.166 | 9.960.765 | 4.531.560 | 45,49% | 5.429.205 | 54,51% | −897.645 (−9,02 p.p.) | 169 / 996 / 1 |
+
+> [!IMPORTANT]
+> **Composição Regional vs. Porte Municipal:** A vantagem de Lula no agregado nacional das cidades com até 50 mil votos válidos (+5,37 milhões de votos) **não é um padrão uniforme em todos os municípios pequenos do país**. Ela decorre quase exclusivamente da votação maciça no Nordeste (+8,57 milhões de saldo em 1.735 cidades). No Centro-Oeste, Sudeste e Sul, Flávio Bolsonaro venceu na ampla maioria das cidades pequenas (venceu em 2.133 dos 2.947 municípios dessas três regiões, abrindo quase 3 milhões de votos de saldo pró-Flávio). Portanto, o porte municipal não deve ser interpretado como fator causal isolado.
+
+**Síntese dos portes:**
+- **Localidades com até 50 mil votos válidos:** Motor determinante da margem nacional de Lula (+5,37M de saldo nacional), alavancado pelas 1.735 cidades do Nordeste e Norte.
+- **Cidades médias e grandes (50 mil a 500 mil válidos):** Principal reduto de Flávio Bolsonaro (+2,40M de saldo líquido em 367 municípios), predominante no interior de SP, Sul e Centro-Oeste.
 - **Grandes metrópoles (>500 mil válidos):** Embora Flávio tenha vencido em 10 das 18 metrópoles brasileiras, Lula obteve uma vantagem agregada de +1,43 milhão de votos nas metrópoles, impulsionado por votações expressivas na capital de São Paulo (+766 mil), Salvador (+732 mil) e Fortaleza (+313 mil).
 
 ---
@@ -72,13 +90,12 @@ $$\text{Vantagem de Lula (p.p.)} = \% \text{Lula} - \% \text{Flávio} = \% \text
 
 Como a transformação afim $f(x) = 2x - 100$ é estritamente crescente (derivada positiva igual a 2), ordenar municípios pelo $\% \text{Lula}$ gera **rigorosamente a mesma sequência/ordenação** que ordená-los pela vantagem percentual de Lula em p.p. O mesmo raciocínio se aplica simetricamente a Flávio Bolsonaro.
 
-**Conclusão:** Entre os 8 rankings gerados, existem exatamente **6 ordenações distintas** na base:
-1. Votos brutos Lula
-2. Votos brutos Flávio
-3. Diferença em votos brutos Lula (Lula − Flávio)
-4. Diferença em votos brutos Flávio (Flávio − Lula)
-5. Percentual / Margem p.p. de Lula
-6. Percentual / Margem p.p. de Flávio
+#### Ressalva Crítica de Cobertura: Vantagem vs. Percentual
+Embora a ordenação seja estritamente idêntica para municípios em que o candidato venceu ($\% > 50\%$), as duas tabelas diferem no escopo de inclusão:
+- **Rankings de Vantagem:** exigem margem positiva (`so_positivos = True`), incluindo **apenas municípios em que o candidato efetivamente venceu** (exclui derrotas e empates).
+- **Rankings Percentuais:** listam todas as localidades do escopo, inclusive municípios onde o candidato obteve votação minoritária (% < 50%).
+
+**Impacto prático nos estados:** Em estados onde um candidato venceu pouquíssimos municípios (como Roraima, onde Lula venceu 1 de 15 cidades, ou Santa Catarina, onde venceu 6 de 295), o ranking de vantagem encerra-se com o número exato de cidades vencidas (1 linha em RR, 6 linhas em SC), enquanto o ranking percentual preenche as posições restantes (até o corte Top N) com cidades onde o candidato foi derrotado.
 
 Ambas as tabelas (% e p.p.) são mantidas nos relatórios para conveniência analítica do leitor (uma permite visualizar o percentual absoluto atingido e a outra quantifica diretamente a margem de separação em relação ao adversário).
 

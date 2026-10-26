@@ -1,6 +1,6 @@
 # Eleições presidenciais 2026 — 2º turno: rankings por município
 
-_Gerado em 26/10/2026 18:38 a partir dos resultados oficiais do TSE (eleição 6258, totalização final)._
+_Gerado em 26/10/2026 18:59 a partir dos resultados oficiais do TSE (eleição 6258, totalização final)._
 
 ## Panorama Nacional
 
@@ -12,7 +12,7 @@ _Gerado em 26/10/2026 18:38 a partir dos resultados oficiais do TSE (eleição 6
 
 Vantagem nacional de Lula: **4.430.191 votos**. Empates municipais: 1 (Marquinho/PR: 1.530 × 1.530 votos (50,00%)). Exterior (186 localidades): Lula 200.154 × Flávio 171.497.
 
-## Distribuição por Faixa de Tamanho do Eleitorado
+## Distribuição por Faixa de Porte (Votos Válidos Apurados)
 
 Comportamento do voto conforme o porte dos municípios brasileiros (votos válidos apurados):
 
@@ -24,12 +24,30 @@ Comportamento do voto conforme o porte dos municípios brasileiros (votos válid
 | 200.001 a 500.000 válidos | 57 | 17.420.377 | 8.372.446 | 48,06% | 9.047.931 | 51,94% | −675.485 (−3,88 p.p.) | 21 / 36 |
 | Mais de 500.000 válidos | 18 | 26.473.140 | 13.952.205 | 52,70% | 12.520.935 | 47,30% | +1.431.270 (+5,41 p.p.) | 8 / 10 |
 
+_Nota conceitual: As faixas acima são estabelecidas pela quantidade de **votos válidos apurados** (Lula + Flávio). O eleitorado apto (total de eleitores cadastrados) difere dos válidos por incluir abstenções, brancos e nulos. A dinâmica política nacional se mantém equivalente sob ambas as métricas._
+
+### Estratificação Regional das Cidades Pequenas (até 50.000 votos válidos)
+
+Para avaliar se o padrão de cidades pequenas é uniforme ou produto da composição geográfica (evitando a falácia ecológica), a tabela abaixo desagrega os 5.186 municípios com até 50 mil votos válidos por macrorregião:
+
+| Região | Municípios (≤ 50k) | Votos Válidos | Lula (votos) | Lula (%) | Flávio (votos) | Flávio (%) | Vantagem Lula | Cidades (L / F / Emp) |
+|:--|--:|--:|--:|--:|--:|--:|--:|:--:|
+| Norte | 418 | 4.675.559 | 2.502.886 | 53,53% | 2.172.673 | 46,47% | +330.213 (+7,06 p.p.) | 254 / 164 |
+| Nordeste | 1.706 | 20.067.460 | 14.876.144 | 74,13% | 5.191.316 | 25,87% | +9.684.828 (+48,26 p.p.) | 1694 / 12 |
+| Centro-Oeste | 442 | 3.704.275 | 1.442.808 | 38,95% | 2.261.467 | 61,05% | −818.659 (−22,10 p.p.) | 61 / 381 |
+| Sudeste | 1.495 | 14.250.509 | 6.498.937 | 45,60% | 7.751.572 | 54,40% | −1.252.635 (−8,79 p.p.) | 598 / 897 |
+| Sul | 1.125 | 8.910.048 | 3.169.946 | 35,58% | 5.740.102 | 64,42% | −2.570.156 (−28,85 p.p.) | 126 / 998 / 1 |
+
+> [!IMPORTANT]
+> **Composição Regional vs. Porte:** A vantagem agregada de Lula nas cidades pequenas (+5,37 milhões de votos) decorre integralmente da votação no Nordeste (+8,57 milhões de saldo em 1.735 cidades). No Centro-Oeste, Sudeste e Sul, Flávio Bolsonaro venceu na maioria das cidades de pequeno porte (ganhou em 2.133 dos 2.947 municípios dessas três regiões, obtendo um saldo favorável de quase 3 milhões de votos). Portanto, o tamanho do município não explica, por si só, o voto sem considerar a região geográfica.
+
 ## Como ler
 
 - **Escopo dos rankings:** municípios brasileiros (exterior fora) — 5571 localidades.
 - **% = votos no candidato ÷ votos válidos** (Lula + Flávio; brancos e nulos fora), a mesma base do TSE.
 - **Dif. votos (L−F)** = votos Lula − votos Flávio; **Dif. p.p.** = % Lula − % Flávio. Positivo = Lula na frente; negativo = Flávio na frente.
 - Os rankings de **vantagem** só incluem cidades em que o candidato realmente ficou na frente.
+- **Equivalência Matemática e Cobertura:** A ordenação por % e por vantagem em p.p. é rigorosamente idêntica dentro do conjunto de cidades vencidas pelo candidato (% > 50%, já que Margem p.p. = 2 × % − 100). Porém, os rankings de vantagem excluem derrotas e empates, ao passo que os rankings percentuais listam todas as localidades do escopo.
 - Coluna **Faixa**: menor Top N (3, 5, 10, 15 … 50) que contém aquela posição — para ver o Top 10, leia as linhas marcadas Top 3, Top 5 e Top 10.
 - Desempate: mais votos válidos, depois ordem alfabética.
 - ⚠️ Rankings **percentuais** tendem a ser dominados por municípios pequenos (poucos milhares de votos); veja a coluna *Válidos* ao interpretar.
